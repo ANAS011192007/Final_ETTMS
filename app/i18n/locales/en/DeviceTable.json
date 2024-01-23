@@ -1,0 +1,11 @@
+{
+    "DeviceID": "Device ID",
+    "CreatedAt": "Created At",
+    "Model": "Model",
+    "Serial": "Serial",
+    "Progress": "Progress",
+    "Status": "Status",
+    "Action": "Action",
+    "NoResults": "No Results",
+    "CreateDevice": "Create Device"
+}

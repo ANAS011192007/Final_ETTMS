@@ -1,0 +1,21 @@
+{
+    "title": "Tracking Registration",
+    "ProcessingType": "Processing Type",
+    "Location": "Location",
+    "ToolUsed": "Tool Used",
+    "EnterLocation": "Enter Location",
+    "CaptureImage": "Capture Image",
+    "Comment": "Comment",
+    "EnterComment": "Enter Comment",
+    "Clear": "clear",
+    "Erase": "erase",
+    "Purge": "purge",
+    "FlashPurge":"Flash Purge",
+    "FlashErase":"Flash Erase",
+    "FlashClear":"Flash Clear",
+    "Submit": "Submit",
+    "TrackID": "Track ID: {{id}}",
+    "TrackRegistration": "Tracking Registration",
+    "SuccessfullyRegisteredDevice": "Successfully registered the device",
+    "OK": "OK"
+  }

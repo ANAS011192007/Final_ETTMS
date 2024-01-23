@@ -1,0 +1,15 @@
+{
+    "TrackInfo": "トラッキング情報",
+    "ProcessingType": "処理タイプ",
+    "CreatedAt": "作成日時",
+    "Location": "場所",
+    "ToolUsed": "使用ツール",
+    "RecordedBy": "記録者",
+    "Image": "画像",
+    "Action": "アクション",
+    "Add": "追加",
+    "Edit": "編集",
+    "Delete": "削除",
+    "Report": "レポート",
+    "pType": "{{processingType}}"
+  }

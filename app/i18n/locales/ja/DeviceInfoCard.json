@@ -1,0 +1,30 @@
+{
+
+      "TrackInformation": "トラック情報",
+      "Running": "実行中",
+      "RecordsCompleted": "記録完了",
+      "Status": "ステータス",
+      "Project": "プロジェクト",
+      "ProjectName": "プロジェクト名",
+      "Request": "リクエスト",
+      "RequestDetails": "ERA>ERA>PUR",
+      "CreatedDate": "作成日",
+      "Duration": "期間",
+      "Deadline": "締め切り",
+      "DeviceSummary": "デバイスの概要",
+      "RecordSummary": "記録の概要",
+      "Total": "合計",
+      "Completed": "完了",
+      "InProgress": "進行中",
+      "Remaining": "残り",
+      "DeviceDetails": "デバイスの詳細",
+      "DeviceType": "デバイスタイプ",
+      "Serial": "シリアル",
+      "Model": "モデル",
+      "Manufacturer": "製造元",
+      "Specification": "仕様",
+      "CSVFile": "CSVファイル",
+      "QRCode": "QRコード"
+
+  }
+  

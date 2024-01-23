@@ -1,0 +1,31 @@
+{
+
+    "DeviceInformation": "Device Information",
+    "Running": "Running",
+    "RecordsCompleted": "Records Completed",
+    "Status": "Status",
+    "Project": "Project",
+    "ProjectName": "Project Name",
+    "Request": "Request",
+    "RequestDetails": "ERA>ERA>PUR",
+    "CreatedDate": "Created Date",
+    "Duration": "Duration",
+    "Deadline": "Deadline",
+    "DeviceSummary": "Device's Summary",
+    "RecordSummary": "Record's Summary",
+    "Total": "Total",
+    "Completed": "Completed",
+    "Laptop": "Laptop",
+    "InProgress": "In Progress",
+    "Remaining": "Remaining",
+    "DeviceDetails": "Device's Details",
+    "DeviceType": "Device Type",
+    "Serial": "Serial",
+    "Model": "Model",
+    "Manufacturer": "Manufacturer",
+    "Specification": "Specification",
+    "CSVFile": "CSV FILE",
+    "QRCode": "QR CODE",
+    "SomePDF": "ADEC PDF"
+
+}

@@ -1,0 +1,32 @@
+{
+
+      "title": "Device Registration",
+      "EnterDeviceName": "Enter Device Name",
+      "EnterDeviceSerial": "Enter Device Serial",
+      "EnterDeviceModel": "Enter Device Model",
+      "SelectAnItem": "Select an item",
+      "Laptop": "Laptop",
+      "Desktop": "Desktop",
+      "HDD": "HDD",
+      "SSD": "SSD",
+      "Tablet": "Tablet",
+      "Mobile": "Mobile",
+      "EnterDeviceManufacturer": "Enter Device Manufacturer",
+      "EnterDeviceSpecification": "Enter Device Specification",
+      "Clear": "Clear",
+      "Submit": "Submit",
+      "DeviceID": "Device ID: {{id}}",
+      "DeviceRegistration": "Device Registration",
+      "Name": "Name :",
+      "Serial": "Serial :",
+      "Model": "Model :",
+      "Type": "Type :",
+      "Manufacturer": "Manufacturer :",
+      "Specification": "Specification :",
+      "Edit": "Edit",
+      "Confirm": "Confirm",
+      "SuccessfullyRegisteredDevice": "Successfully registered the device",
+      "OK": "OK"
+
+  }
+  

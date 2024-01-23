@@ -1,0 +1,15 @@
+{
+    "TrackInfo": "Tracking Information",
+    "ProcessingType": "Processing Type",
+    "CreatedAt": "Created At",
+    "Location": "Location",
+    "ToolUsed": "Tool Used",
+    "RecordedBy": "Recorded By",
+    "Image": "Image",
+    "Action": "Action",
+    "Add": "Add",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "Report": "Report",
+    "pType": "{{processingType}}"
+}

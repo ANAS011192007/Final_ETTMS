@@ -1,0 +1,11 @@
+{
+    "DeviceID": "デバイスID",
+    "CreatedAt": "作成日",
+    "Model": "モデル",
+    "Serial": "シリアル",
+    "Progress": "進捗",
+    "Status": "ステータス",
+    "Action": "アクション",
+    "NoResults": "結果がありません",
+    "CreateDevice": "デバイスの作成"
+}

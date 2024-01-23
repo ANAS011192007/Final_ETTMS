@@ -1,0 +1,16 @@
+{
+    "DeviceQR": "Scan QR Code to Register Device",
+    "TrackQR": "Scan QR Code to Register Track",
+    "DeviceQRScan": "Scan QR Code to View Device Information",
+    "TrackQRScan": "Scan QR Code to View Track Information",
+    "DeviceInput": "Enter Track ID to Register Device",
+    "TrackInput": "Enter Device ID to Register Track",
+    "DeviceInputScan": "Enter Track ID to View Device Information",
+    "TrackInputScan": "Enter Device ID to View Track Information",
+    "Stop":"Stop Scan",
+    "Scan": "Scan Here",
+    "Submit":"Submit",
+    "Deviceplaceholder":"Enter Device ID",
+    "Trackplaceholder":"Enter Track ID"
+
+}

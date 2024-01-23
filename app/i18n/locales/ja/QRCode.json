@@ -1,0 +1,15 @@
+{
+    "DeviceQR": "デバイスを登録するにはQRコードをスキャンしてください",
+    "TrackQR": "トラックを登録するにはQRコードをスキャンしてください",
+    "DeviceQRScan": "デバイス情報を表示するにはQRコードをスキャンしてください",
+    "TrackQRScan": "トラック情報を表示するにはQRコードをスキャンしてください",
+    "DeviceInput": "デバイスを登録するにはトラックIDを入力してください",
+    "TrackInput": "トラックを登録するにはデバイスIDを入力してください",
+    "DeviceInputScan": "デバイス情報を表示するにはトラックIDを入力してください",
+    "TrackInputScan": "トラック情報を表示するにはデバイスIDを入力してください",
+    "Stop": "スキャンを停止",
+    "Scan": "ここをスキャン",
+    "Submit": "送信",
+    "Deviceplaceholder": "デバイスIDを入力",
+    "Trackplaceholder": "トラックIDを入力"
+}

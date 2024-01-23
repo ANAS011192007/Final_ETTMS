@@ -1,0 +1,21 @@
+{
+    "title": "トラッキング登録",
+    "ProcessingType": "処理タイプ",
+    "Location": "場所",
+    "ToolUsed": "使用ツール",
+    "EnterLocation": "場所を入力",
+    "CaptureImage": "画像をキャプチャ",
+    "Comment": "コメント",
+    "EnterComment": "コメントを入力",
+    "Clear": "クリア",
+    "Erase": "消去",
+    "Purge": "パージ",
+    "FlashPurge": "フラッシュパージ",
+    "FlashErase": "フラッシュイレース",
+    "FlashClear": "フラッシュクリア",
+    "Submit": "提出",
+    "TrackID": "トラックID:{{id}}",
+    "TrackRegistration": "トラッキング登録",
+    "SuccessfullyRegisteredDevice": "デバイスの登録に成功しました",
+    "OK": "OK"
+  }
