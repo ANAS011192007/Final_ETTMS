@@ -44,6 +44,7 @@ import { toast } from "sonner";
 import { useTranslation } from "@/app/i18n/client";
 
 const TrackRegistrationFormPage = () => {
+  const [error, setError] = useState(false);
   const searchparams = useSearchParams();
   const trackId = searchparams.get("track_id");
   const [loading, setLoading] = useState(true);
@@ -130,11 +131,13 @@ const TrackRegistrationFormPage = () => {
       // console.log(toolsres.data.body);
       // console.log(tools.current);
       setLoading(false);
+      setError(false);
       // Your logic with the session data
     } catch (error: any) {
       console.error("Error fetching session data:", error);
-      toast.error("Processing is already full for this track");
+      // toast.error("Processing is already full for this track");
       setLoading(false);
+      setError(true);
       // setLoading(false);
     }
   };
@@ -394,7 +397,10 @@ const TrackRegistrationFormPage = () => {
       <div className="">
         <Button
           type="submit"
-          className="px-6 py-2 bg-slate-600 text-white font-bold text-lg rounded-xl cursor-pointer mr-2"
+          className={`px-6 py-2 bg-slate-600 text-white font-bold text-lg rounded-xl cursor-pointer mr-2 ${
+            error ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={error}
         >
           {t("Clear")}
         </Button>
@@ -402,7 +408,10 @@ const TrackRegistrationFormPage = () => {
           <DialogTrigger asChild>
             <Button
               type="submit"
-              className="px-6 py-2 bg-slate-600 text-white font-bold  text-lg rounded-xl cursor-pointer"
+              className={`px-6 py-2 bg-slate-600 text-white font-bold text-lg rounded-xl cursor-pointer ${
+                error ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={error}
             >
               {t("Submit")}
             </Button>

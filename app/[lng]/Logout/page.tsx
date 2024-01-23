@@ -43,7 +43,7 @@ const SettingPage = async () => {
 
   console.log(session);
   const data = {
-    redirectTo: "/",
+    redirectTo: "/Login",
   };
 
   return (

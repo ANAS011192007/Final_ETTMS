@@ -30,6 +30,7 @@ export default async function RootLayout({
   params: { lng },
 }: RootLayoutProps) {
   const session = await auth();
+  // console.log(session);
   return (
     <html lang={lng} dir={dir(lng)}>
       <body className={inter.className}>

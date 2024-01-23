@@ -71,23 +71,28 @@ export default {
           headers: { 'Content-Type': 'application/json' },
         });
         const data = await res.json();
-      
+
         if (res.ok && data) {
-          console.log(data.access_token);
-      
+          // console.log(data.access_token);
+          // sessionStorage.setItem("access_token", data.access_token)
+          // console.log(localStorage.getItem("access_token"))
           // Check if the user with the same ID already exists in your local database
-          const userExistsLocally = users.users.some(
-            (user) => user.body._id === data.body._id
-          );
+          // const userExistsLocally = users.users.some(
+          //   (user) => user.body._id === data.body._id
+          // );
       
-          if (!userExistsLocally) {
-            const response = await axios.post("http://localhost:3001/users/", data.body);
-            // localStorage.setItem("email", data.body.email);
+          // if (!userExistsLocally) {
+          //   const response = await axios.post("http://localhost:3001/users/", data.body);
+          //   localStorage.setItem("access_token", data.access_token);
+
+
             return data.body;
-          } else {
-            console.log('User already exists locally. Skipping post request.');
-            return data.body;
-          }
+          // } else {
+          //   console.log('User already exists locally. Skipping post request.');
+          //   // localStorage.setItem("access_token", data.access_token);
+          //   // console.log(localStorage.getItem("access_token"))
+          //   return data.access_token;
+          // }
         }
       } catch (error) {
         console.error('Error during login:', error);
@@ -98,7 +103,6 @@ export default {
   callbacks: {
     
     async session({token,session}){
-      // console.log("session_Token",session)
       if(session.user){
         session.user.name = session.user.name
       }

@@ -26,23 +26,23 @@ import { useTranslation } from "../../i18n/client";
 import Signout from "./Signout";
 import users from "@/data/db.json";
 
-const getUserDetails = () => {
-  const accessToken = localStorage.getItem("access_token");
-  if (accessToken) {
-    const user = users.users.find((u) => u.access_token === accessToken);
-    if (user) {
-      const { first_name, last_name } = user.body;
-      return {
-        firstName: first_name,
-        lastName: last_name,
-      };
-    }
-  }
-  return null;
-};
+// const getUserDetails = () => {
+//   const accessToken = localStorage.getItem("access_token");
+//   if (accessToken) {
+//     const user = users.users.find((u) => u.access_token === accessToken);
+//     if (user) {
+//       const { first_name, last_name } = user.body;
+//       return {
+//         firstName: first_name,
+//         lastName: last_name,
+//       };
+//     }
+//   }
+//   return null;
+// };
 
-// Call the function to get user details
-const userDetails = getUserDetails();
+// // Call the function to get user details
+// const userDetails = getUserDetails();
 const NavbarPage = ({ params: { lng } }: { params: { lng: string } }) => {
   const { t } = useTranslation(lng, "navbar");
   const router = useRouter();
@@ -124,9 +124,10 @@ const NavbarPage = ({ params: { lng } }: { params: { lng: string } }) => {
             </Avatar>
             <div className="flex-col ml-2">
               <div className="text-blue-900 font-bold">
-                {userDetails
+                {/* {userDetails
                   ? `${userDetails.firstName} ${userDetails.lastName}`
-                  : t("Koichi Iiizumi")}
+                  : t("Koichi Iiizumi")} */}
+                Koichi Iiizumi
               </div>
               <div className="text-slate-500 text-xs">Ultra-X Asia Pacific</div>
             </div>

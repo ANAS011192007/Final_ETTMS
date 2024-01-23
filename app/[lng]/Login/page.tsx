@@ -25,6 +25,7 @@ import { useTranslation } from "@/app/i18n/client";
 export default function LoginPage() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
   // const { pending } = useFormStatus();
+
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

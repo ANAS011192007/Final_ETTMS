@@ -20,6 +20,7 @@ export function AuthProvider({ children }) {
 
   const login = (userData) => {
     // Save the user data in localStorage or any other storage mechanism
+    console.log(userData)
     localStorage.setItem('authToken', btoa(JSON.stringify(userData)));
     setUser(userData);
   };

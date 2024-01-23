@@ -26,6 +26,24 @@
     "Specification": "仕様",
     "CSVFile": "CSVファイル",
     "QRCode": "QRコード",
-    "SomePDF": "一部のPDF"
+    "SomePDF": "一部のPDF",
+    "deviceId": "デバイスID",
+    "title": "デバイスの追跡情報証明書",
+    "body1": "下記の設備につきましては、ご依頼の処理通りに全ての処理が完了したデータとなります。 Association of Data Erase Certification (ADEC) によって認定されます。",
+    "startDate": "追跡開始日",
+    "endDate": "追跡完了日",
+    "requiredSpecifications": "要求仕様",
+    "body2": "この文書は、企業のデータ消去作業が完了したことを証明するものとなります。",
+    "deviceDetails": "デバイスの詳細",
+    "deviceType": "デバイスタイプ",
+    "manufacturer": "メーカー",
+    "model": "モデル",
+    "serial": "シリアル",
+    "recordInformationDetails": "レコード情報の詳細",
+    "recordDate": "記録日",
+    "processingType": "処理タイプ",
+    "softwareUsed": "使用したソフトウェア",
+    "location": "位置",
+    "image": "画像"
 
 }

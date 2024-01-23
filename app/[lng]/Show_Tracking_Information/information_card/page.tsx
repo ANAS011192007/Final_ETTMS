@@ -49,7 +49,248 @@ const InfoCard = ({ trackId }: { trackId: string }) => {
   );
   const recordData = trackingData.trackingData;
   const imageContainerRefs = recordData.map(() => useRef<HTMLDivElement>(null));
-  const downloadPDF = async () => {
+  const JpdownloadPDF = async () => {
+    const access_token = localStorage.getItem("access_token");
+
+    const inf = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/devices/showDeviceDetailsByDevicetag`,
+      { device_tag: trackId },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const records = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/records/showAllRecordsOfFollowingDevice`,
+      { device_id: device_id },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    dataList.current = records.data.body.map((item: any) => ({
+      id: item._id,
+      "Processing Type": item.processing_type,
+      "Created at": item.createdAt,
+      Location: item.location,
+      "Tool Used": item.tool.name_en,
+      "Recorded By": `${item.recorded_by.first_name} ${item.recorded_by.last_name}`,
+      Image: item.image_link,
+    }));
+
+    const pdf = new jsPDF({
+      unit: "mm",
+      format: "a4",
+      orientation: "portrait",
+    });
+
+    pdf.setFont("normal", "bold");
+    pdf.setFontSize(10);
+
+    const id = `${t("deviceid")} : ${trackId}`;
+    pdf.text(id, 130, 30);
+
+    pdf.setFontSize(20);
+    const title = t("title");
+    pdf.text(title, 40, 45);
+    pdf.setFont("normal", "normal");
+    pdf.setFontSize(13);
+    const info = t("body1");
+
+    const margin = 15;
+    const maxWidth = pdf.internal.pageSize.getWidth() - 2 * margin;
+
+    pdf.text(info, margin, 60, { maxWidth });
+
+    const specification = `
+   $("startdate")
+    追跡完了日:
+    要求仕様:`;
+
+    pdf.setFont("normal", "bold");
+    pdf.text(specification, 40, 75);
+    pdf.setFont("normal", "normal");
+    const tstart = `
+        12/21/2023, 2:33:08 PM
+    `;
+    pdf.text(tstart, 86, 75);
+    const tend = `
+        12/21/2023, 2:40:08 PM
+    `;
+    pdf.text(tend, 99, 80.5);
+    const req = `
+        ERA>PUR>PUR
+    `;
+    pdf.text(req, 93, 85.8);
+    // const tstart = inf.data.body.createdAt.slice(0, 10);
+    // pdf.text(tstart, 86, 75);
+    // const tend = inf.data.body.deadline.slice(0, 10);
+    // pdf.text(tend, 99, 80.5);
+    // const req = inf.data.body.request_type.title_en;
+    // pdf.text(req, 93, 85.8);
+
+    const additionalInfo =
+      "この文書は、企業のデータ消去作業が完了したことを証明するものとなります。";
+    pdf.text(additionalInfo, margin, 105, { maxWidth });
+
+    const deviceDetails = [
+      ["デバイスタイプ", "メーカー", "モデル", "シリアル"],
+      [
+        inf.data.body.device_model.device_type,
+        inf.data.body.device_model.manufacturer,
+        inf.data.body.device_model.model,
+        inf.data.body.serial,
+        // device_info.type,
+        // device_info.manufacturer,
+        // device_info.model,
+        // device_info.serial,
+        // matchingDevice?.Type!,
+        // matchingDevice?.Manufacturer!,
+        // matchingDevice?.Model!,
+        // matchingDevice?.Serial!,
+      ],
+    ];
+    console.log(deviceDetails);
+    const tableX = margin;
+    const tableY = 125;
+    const cellPadding = 5;
+
+    const cellWidth = maxWidth / deviceDetails[0].length;
+    var cellHeight = 15;
+
+    pdf.setFontSize(20);
+    pdf.text("Device Details", tableX, tableY - 10);
+    pdf.setFontSize(15);
+    deviceDetails[0].forEach((header, index) => {
+      const cellX = tableX + index * cellWidth;
+      const cellY = tableY;
+      pdf.rect(cellX, cellY, cellWidth, cellHeight);
+      pdf.text(header, cellX + cellWidth / 2, cellY + cellHeight / 2, {
+        align: "center",
+      });
+    });
+    console.log(deviceDetails);
+    pdf.setFontSize(10);
+    deviceDetails.slice(1).forEach((row, rowIndex) => {
+      row.forEach((cell, cellIndex) => {
+        const cellX = tableX + cellIndex * cellWidth;
+        const cellY =
+          tableY + (rowIndex + 1) * cellHeight + rowIndex * cellPadding;
+        pdf.rect(cellX, cellY, cellWidth, cellHeight);
+        pdf.text(cell, cellX + cellWidth / 2, cellY + cellHeight / 2, {
+          align: "center",
+        });
+      });
+    });
+
+    const recordDetails = [
+      ["記録日", "処理タイプ", "使用したソフトウェア", "位置", "画像"],
+      ...dataList.current.map((record: any) => [
+        record["Created at"].slice(0, 10),
+        record["Processing Type"],
+        record["Tool Used"],
+        record["Location"],
+        record["Image"],
+      ]),
+    ];
+
+    const recordTableY = tableY + 50;
+
+    pdf.setFontSize(20);
+    pdf.text("Record Information Details", tableX, recordTableY - 10);
+    pdf.setFontSize(15);
+    const cellWidthForRecord = maxWidth / recordDetails[0].length;
+
+    recordDetails[0].forEach((header, index) => {
+      const cellX = tableX + index * cellWidthForRecord;
+      const cellY = recordTableY;
+      pdf.rect(cellX, cellY, cellWidthForRecord, cellHeight);
+      pdf.text(header, cellX + cellWidthForRecord / 2, cellY + cellHeight / 2, {
+        align: "center",
+      });
+    });
+    cellHeight = 25;
+    pdf.setFontSize(10);
+    recordDetails.slice(1).forEach((row, rowIndex) => {
+      row.forEach((cell, cellIndex) => {
+        if (cellIndex === recordDetails[0].length - 1) {
+          const cellX = tableX + cellIndex * cellWidthForRecord;
+          const cellY = recordTableY - 10 + (rowIndex + 1) * cellHeight;
+
+          const imageDataUrl =
+            imageContainerRefs[rowIndex]?.current?.querySelector("img")?.src;
+          const qrCodeSize = 20;
+
+          const centerX = cellX + cellWidthForRecord / 2 - qrCodeSize / 2;
+          const centerY = cellY + cellHeight / 2 - qrCodeSize / 2;
+
+          pdf.rect(cellX, cellY, cellWidthForRecord, cellHeight);
+          pdf.addImage(
+            imageDataUrl!,
+            "JPEG",
+            centerX,
+            centerY,
+            qrCodeSize,
+            qrCodeSize
+          );
+        } else {
+          const cellX = tableX + cellIndex * cellWidthForRecord;
+          const cellY = recordTableY - 10 + (rowIndex + 1) * cellHeight;
+
+          const cellTextArray = pdf.splitTextToSize(cell, cellWidthForRecord);
+          pdf.rect(cellX, cellY, cellWidthForRecord, cellHeight);
+          pdf.text(
+            cellTextArray,
+            cellX + cellWidthForRecord / 2,
+            cellY + cellHeight / 2,
+            {
+              align: "center",
+            }
+          );
+        }
+      });
+    });
+
+    pdf.save("device_details.pdf");
+  };
+
+  const EngdownloadPDF = async () => {
+    const access_token = localStorage.getItem("access_token");
+
+    const inf = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/devices/showDeviceDetailsByDevicetag`,
+      { device_tag: trackId },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const records = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/records/showAllRecordsOfFollowingDevice`,
+      { device_id: device_id },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    dataList.current = records.data.body.map((item: any) => ({
+      id: item._id,
+      "Processing Type": item.processing_type,
+      "Created at": item.createdAt,
+      Location: item.location,
+      "Tool Used": item.tool.name_en,
+      "Recorded By": `${item.recorded_by.first_name} ${item.recorded_by.last_name}`,
+      Image: item.image_link,
+    }));
+
     const pdf = new jsPDF({
       unit: "mm",
       format: "a4",
@@ -83,52 +324,29 @@ const InfoCard = ({ trackId }: { trackId: string }) => {
     pdf.setFont("normal", "bold");
     pdf.text(specification, 40, 75);
     pdf.setFont("normal", "normal");
-    const tstart = `
-    12/21/2023, 2:33:08 PM
-`;
-    pdf.text(tstart, 86, 75);
-    const tend = `
-    12/21/2023, 2:40:08 PM
-`;
-    pdf.text(tend, 99, 80.5);
-    const req = `
-    ERA>PUR>PUR
-`;
-    pdf.text(req, 93, 85.8);
+    // const tstart = `
+    //     12/21/2023, 2:33:08 PM
+    // `;
+    // pdf.text(tstart, 86, 75);
+    // const tend = `
+    //     12/21/2023, 2:40:08 PM
+    // `;
+    // pdf.text(tend, 99, 80.5);
+    // const req = `
+    //     ERA>PUR>PUR
+    // `;
+    // pdf.text(req, 93, 85.8);
+    const tstart = inf.data.body.createdAt.slice(0, 10);
+    pdf.text(tstart, 92, 80.5);
+    const tend = inf.data.body.deadline.slice(0, 10);
+    pdf.text(tend, 105, 85.5);
+    const req = inf.data.body.request_type.title_en;
+    pdf.text(req, 99, 91);
+
     const additionalInfo =
       "This document serves as proof that your company data erasure work has been completed.";
     pdf.text(additionalInfo, margin, 105, { maxWidth });
-    const access_token = localStorage.getItem("access_token");
 
-    const inf = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/devices/showDeviceDetailsByDevicetag`,
-      { device_tag: trackId },
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const records = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/records/showAllRecordsOfFollowingDevice`,
-      { device_id: device_id },
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    dataList.current = records.data.body.map((item: any) => ({
-      id: item._id,
-      "Processing Type": item.processing_type,
-      "Created at": item.createdAt,
-      Location: item.location,
-      "Tool Used": item.tool.name_en,
-      "Recorded By": `${item.recorded_by.first_name} ${item.recorded_by.last_name}`,
-      Image: item.image_link,
-    }));
     const deviceDetails = [
       ["Device Type", "Manufacturer", "Model", "Serial"],
       [
@@ -249,6 +467,7 @@ const InfoCard = ({ trackId }: { trackId: string }) => {
 
     pdf.save("device_details.pdf");
   };
+
   const fetchData = async () => {
     try {
       const access_token = localStorage.getItem("access_token");
@@ -498,7 +717,8 @@ const InfoCard = ({ trackId }: { trackId: string }) => {
         </CardContent>
         <CardFooter>
           <Button
-            onClick={downloadPDF}
+            // onClick={lng === "en" ? EngdownloadPDF : JpdownloadPDF}
+            onClick={EngdownloadPDF}
             className="border-blue-300 text-slate-500"
             variant="outline"
           >
