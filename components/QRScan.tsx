@@ -1,45 +1,17 @@
 "use client";
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
-import { useQRCode } from "next-qrcode";
+import { useTranslation } from "@/app/i18n/client";
+import axios from "axios";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import QRCode from "react-qr-code";
+import { useZxing } from "react-zxing";
+import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { createRef } from "react";
-import { QrReader } from "react-qr-reader";
-import { redirect, usePathname, useRouter } from "next/navigation";
-import { useZxing } from "react-zxing";
-import { Separator } from "./ui/separator";
-import { useTranslation } from "@/app/i18n/client";
-import trackingData from "../data/db.json";
-import { toast } from "sonner";
-import users from "@/data/db.json";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { useSession } from "next-auth/react";
-import axios from "axios";
-// import { useMediaDevices } from "react-media-devices";
-// const constraints: MediaStreamConstraints = {
-//   video: true,
-//   audio: false,
-// };
+
 function QRScanPage({ Page, trackId }: { Page: string; trackId?: string }) {
   const [data, setData] = useState("No result");
-  // const { data: session, status } = useSession();
-  // console.log("asdasd", status);
-  // if (status !== "authenticated") {
-  //   redirect("Login");
-  // }
-  // const [alertdata, setAlertData] = useState(false);
+
   const [showQRReader, setShowQRReader] = useState(false);
   const [showAlertDialog, setShowAlertDialog] = useState(false);
   const router = useRouter();
@@ -56,16 +28,9 @@ function QRScanPage({ Page, trackId }: { Page: string; trackId?: string }) {
 
     try {
       if (Page === "Device") {
-        console.log(datas);
         let access_token;
 
         if (localStorage.getItem("access_token") === undefined) {
-          // const session = await axios.post("http://localhost:3000/api/session");
-          // const email = session.data.user.email;
-          // console.log(email);
-          // const user = users.users.find(
-          //   (user: any) => user.body.email === email
-          // );
           access_token =
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODFhMzQzMWQzYzI2YzU2YzhkN2ZiNSIsImVtYWlsIjoiYWRtaW5AdGVzdC5pbyIsImZpcnN0X25hbWUiOiJUZXN0IiwibGFzdF9uYW1lIjoiQWRtaW4iLCJjb250YWN0X251bWJlciI6IjAxNjExMTExMTExIiwib3JnYW5pemF0aW9uIjoiNjQ4MTllYzljZGI5MzY2M2Y1ODQyOWQyIiwib3JnYW5pemF0aW9uX25hbWVfZW4iOiJUZXN0IE9mZmljZSAxIiwib3JnYW5pemF0aW9uX25hbWVfanAiOiLjg4bjgrnjg4jjgqrjg5XjgqPjgrkxIiwiaWF0IjoxNzA1OTgwNDkwLCJleHAiOjE3MDg1NzI0OTB9.YF1cru1HsiMuy5qqCehzglfz91BWs3kcCsKuxAdZJcA";
           localStorage.setItem("access_token", access_token!);
@@ -115,13 +80,6 @@ function QRScanPage({ Page, trackId }: { Page: string; trackId?: string }) {
         let access_token;
 
         if (localStorage.getItem("access_token") === undefined) {
-          // const session = await axios.post("http://localhost:3000/api/session");
-          // const email = session.data.user.email;
-          // console.log(email);
-          // const user = users.users.find(
-          //   (user: any) => user.body.email === email
-          // );
-          // access_token = user?.access_token;
           access_token =
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODFhMzQzMWQzYzI2YzU2YzhkN2ZiNSIsImVtYWlsIjoiYWRtaW5AdGVzdC5pbyIsImZpcnN0X25hbWUiOiJUZXN0IiwibGFzdF9uYW1lIjoiQWRtaW4iLCJjb250YWN0X251bWJlciI6IjAxNjExMTExMTExIiwib3JnYW5pemF0aW9uIjoiNjQ4MTllYzljZGI5MzY2M2Y1ODQyOWQyIiwib3JnYW5pemF0aW9uX25hbWVfZW4iOiJUZXN0IE9mZmljZSAxIiwib3JnYW5pemF0aW9uX25hbWVfanAiOiLjg4bjgrnjg4jjgqrjg5XjgqPjgrkxIiwiaWF0IjoxNzA1OTgwNDkwLCJleHAiOjE3MDg1NzI0OTB9.YF1cru1HsiMuy5qqCehzglfz91BWs3kcCsKuxAdZJcA";
           localStorage.setItem("access_token", access_token!);
@@ -164,50 +122,17 @@ function QRScanPage({ Page, trackId }: { Page: string; trackId?: string }) {
         }
       }
     } catch (error: any) {
-      // Handle the error as needed
       console.error("Error:", error);
 
       if (error.response) {
-        // Status 409 indicates a conflict, show a toast for processing types full
         toast.error(error.response.statustext);
       }
     }
   };
 
-  // const handleScan = (result: any, error: any) => {
-  //   if (!!result) {
-  //     setData(result.text);
-  //     const params = new URLSearchParams();
-  //     if (data) params.append("data", result.text);
-  //     const query = params.size ? "?" + params.toString() : "";
-
-  //     router.push("/Show_Device_Information/form" + query);
-
-  //     console.log(result.text);
-  //   }
-
-  //   if (!!error) {
-  //     console.info(error);
-  //   }
-  // };
-
   const handleQRButtonClick = () => {
     setShowQRReader(true);
   };
-
-  // const handleInputChange = () => {
-  //   // setData(e.target.value);
-  //   const params = new URLSearchParams();
-  //   if (Page === "Device") {
-  //     if (data) params.append("device_id", data);
-  //     const query = params.size ? "?" + params.toString() : "";
-  //     router.push("/Show_Device_Information/form" + query);
-  //   } else {
-  //     if (data) params.append("track_id", data);
-  //     const query = params.size ? "?" + params.toString() : "";
-  //     router.push("/Show_Tracking_Information/form" + query);
-  //   }
-  // };
 
   const handleStopButtonClick = () => {
     setShowQRReader(false);
@@ -253,15 +178,6 @@ function QRScanPage({ Page, trackId }: { Page: string; trackId?: string }) {
                   </Button>
                 </div>
               )}
-              {/* <div className="w-64 p-2 border-2 border-slate-600 rounded-md"> */}
-              {/* <QrReader
-                  constraints={{
-                    facingMode: "environment",
-                  }}
-                  onResult={handleScan}
-                /> */}
-
-              {/* </div> */}
 
               <video
                 className="w-64 p-2 border-2 border-slate-600 rounded-md"
@@ -304,15 +220,6 @@ function QRScanPage({ Page, trackId }: { Page: string; trackId?: string }) {
                     const query = params.size ? "?" + params.toString() : "";
                     let access_token;
                     if (localStorage.getItem("access_token") === undefined) {
-                      // const session = await axios.post(
-                      //   "http://localhost:3000/api/session"
-                      // );
-                      // const email = session.data.user.email;
-                      // console.log(email);
-                      // const user = users.users.find(
-                      //   (user: any) => user.body.email === email
-                      // );
-                      // access_token = user?.access_token;
                       access_token =
                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODFhMzQzMWQzYzI2YzU2YzhkN2ZiNSIsImVtYWlsIjoiYWRtaW5AdGVzdC5pbyIsImZpcnN0X25hbWUiOiJUZXN0IiwibGFzdF9uYW1lIjoiQWRtaW4iLCJjb250YWN0X251bWJlciI6IjAxNjExMTExMTExIiwib3JnYW5pemF0aW9uIjoiNjQ4MTllYzljZGI5MzY2M2Y1ODQyOWQyIiwib3JnYW5pemF0aW9uX25hbWVfZW4iOiJUZXN0IE9mZmljZSAxIiwib3JnYW5pemF0aW9uX25hbWVfanAiOiLjg4bjgrnjg4jjgqrjg5XjgqPjgrkxIiwiaWF0IjoxNzA1OTgwNDkwLCJleHAiOjE3MDg1NzI0OTB9.YF1cru1HsiMuy5qqCehzglfz91BWs3kcCsKuxAdZJcA";
                       localStorage.setItem("access_token", access_token!);
@@ -351,15 +258,6 @@ function QRScanPage({ Page, trackId }: { Page: string; trackId?: string }) {
                       toast.error("This device has not been registered yet.");
                     }
                   } else {
-                    //   if (data) params.append("track_id", data);
-                    //   console.log(data);
-                    //   const query = params.size ? "?" + params.toString() : "";
-                    //   const isEqual = trackingData.DeviceRegistrationData.some(
-                    //     (devicedata) => devicedata.deviceid === data
-                    //   );
-                    //   if (isEqual) router.push(`Show_Tracking_Information${query}`);
-                    //   else toast.error("This track has not been registered yet.");
-                    // }
                     console.log("dataaa", data);
                     if (data) {
                       params.append("track_tag", data);
@@ -367,15 +265,6 @@ function QRScanPage({ Page, trackId }: { Page: string; trackId?: string }) {
 
                     let access_token;
                     if (localStorage.getItem("access_token") === undefined) {
-                      // const session = await axios.post(
-                      //   "http://localhost:3000/api/session"
-                      // );
-                      // const email = session.data.user.email;
-                      // console.log(email);
-                      // const user = users.users.find(
-                      //   (user: any) => user.body.email === email
-                      // );
-                      // access_token = user?.access_token;
                       access_token =
                         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODFhMzQzMWQzYzI2YzU2YzhkN2ZiNSIsImVtYWlsIjoiYWRtaW5AdGVzdC5pbyIsImZpcnN0X25hbWUiOiJUZXN0IiwibGFzdF9uYW1lIjoiQWRtaW4iLCJjb250YWN0X251bWJlciI6IjAxNjExMTExMTExIiwib3JnYW5pemF0aW9uIjoiNjQ4MTllYzljZGI5MzY2M2Y1ODQyOWQyIiwib3JnYW5pemF0aW9uX25hbWVfZW4iOiJUZXN0IE9mZmljZSAxIiwib3JnYW5pemF0aW9uX25hbWVfanAiOiLjg4bjgrnjg4jjgqrjg5XjgqPjgrkxIiwiaWF0IjoxNzA1OTgwNDkwLCJleHAiOjE3MDg1NzI0OTB9.YF1cru1HsiMuy5qqCehzglfz91BWs3kcCsKuxAdZJcA";
                       localStorage.setItem("access_token", access_token!);
@@ -418,10 +307,8 @@ function QRScanPage({ Page, trackId }: { Page: string; trackId?: string }) {
                   }
                 } catch (error: any) {
                   if (error.response) {
-                    // Status 409 indicates a conflict, show a toast for processing types full
                     toast.error(error.response.statustext);
                   } else {
-                    // Handle other errors as needed
                     console.error("Error:", error);
                   }
                 }

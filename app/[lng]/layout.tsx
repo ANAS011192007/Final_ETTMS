@@ -1,15 +1,13 @@
+import { auth } from "@/auth";
+import { Toaster } from "@/components/ui/sonner";
+import { dir } from "i18next";
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import { languages } from "../i18n/settings";
-import { Theme } from "@radix-ui/themes";
-import SidebarPage from "./sidebar/page";
 import NavbarPage from "./navbar/page";
-import { dir } from "i18next";
-import FooterPage from "./Footer/page";
-import { Toaster } from "@/components/ui/sonner";
-import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
+import SidebarPage from "./sidebar/page";
 // const languages = ["en", "ja"];
 const inter = Inter({ subsets: ["latin"] });
 export async function generateStaticParams() {
@@ -30,7 +28,7 @@ export default async function RootLayout({
   params: { lng },
 }: RootLayoutProps) {
   const session = await auth();
-  // console.log(session);
+  console.log(session);
   return (
     <html lang={lng} dir={dir(lng)}>
       <body className={inter.className}>
@@ -47,20 +45,8 @@ export default async function RootLayout({
         ) : (
           <div>{children}</div>
         )}
-        {/* <div className="flex flex-col h-screen">
-          <div className="flex">
-            <SidebarPage params={{ lng }} />
-            <div className="flex-1 ">
-              <NavbarPage params={{ lng }} />
-              <SessionProvider>{children}</SessionProvider>
-            </div>
-          </div>
-        </div> */}
         <Toaster />
       </body>
     </html>
-    // <html lang={lng} dir={dir(lng)}>
-    //   <body className={inter.className}>{children}</body>
-    // </html>
   );
 }

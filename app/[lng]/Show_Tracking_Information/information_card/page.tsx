@@ -1,4 +1,6 @@
 "use client";
+import { useTranslation } from "@/app/i18n/client";
+import PieChartComponent from "@/components/chart";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,19 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import PieChartComponent from "@/components/chart";
-import { FaCircle, FaCircleDot } from "react-icons/fa6";
-import { MdOutlineFileDownload } from "react-icons/md";
-import Circle from "react-circle";
-import trackingData from "../../../../data/db.json";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useTranslation } from "@/app/i18n/client";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import html2canvas from "html2canvas";
-import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import jsPDF from "jspdf";
 import Image from "next/image";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { FaCircle } from "react-icons/fa6";
+import { MdOutlineFileDownload } from "react-icons/md";
+import trackingData from "../../../../data/db.json";
 interface DeviceInfo {
   type: string;
   manufacturer: string;
@@ -29,9 +26,7 @@ interface DeviceInfo {
 }
 
 const InfoCard = ({ trackId }: { trackId: string }) => {
-  // console.log(trackId);
   const record_summary = useRef(null);
-  // let device_info: DeviceInfo = useRef;
   const searchparams = useSearchParams();
   const device_id = searchparams.get("track_id");
   const info: any = useRef(null);
@@ -126,12 +121,6 @@ const InfoCard = ({ trackId }: { trackId: string }) => {
         ERA>PUR>PUR
     `;
     pdf.text(req, 93, 85.8);
-    // const tstart = inf.data.body.createdAt.slice(0, 10);
-    // pdf.text(tstart, 86, 75);
-    // const tend = inf.data.body.deadline.slice(0, 10);
-    // pdf.text(tend, 99, 80.5);
-    // const req = inf.data.body.request_type.title_en;
-    // pdf.text(req, 93, 85.8);
 
     const additionalInfo =
       "この文書は、企業のデータ消去作業が完了したことを証明するものとなります。";
@@ -144,14 +133,6 @@ const InfoCard = ({ trackId }: { trackId: string }) => {
         inf.data.body.device_model.manufacturer,
         inf.data.body.device_model.model,
         inf.data.body.serial,
-        // device_info.type,
-        // device_info.manufacturer,
-        // device_info.model,
-        // device_info.serial,
-        // matchingDevice?.Type!,
-        // matchingDevice?.Manufacturer!,
-        // matchingDevice?.Model!,
-        // matchingDevice?.Serial!,
       ],
     ];
     console.log(deviceDetails);
@@ -354,14 +335,6 @@ const InfoCard = ({ trackId }: { trackId: string }) => {
         inf.data.body.device_model.manufacturer,
         inf.data.body.device_model.model,
         inf.data.body.serial,
-        // device_info.type,
-        // device_info.manufacturer,
-        // device_info.model,
-        // device_info.serial,
-        // matchingDevice?.Type!,
-        // matchingDevice?.Manufacturer!,
-        // matchingDevice?.Model!,
-        // matchingDevice?.Serial!,
       ],
     ];
     console.log(deviceDetails);
@@ -514,20 +487,13 @@ const InfoCard = ({ trackId }: { trackId: string }) => {
   };
 
   useEffect(() => {
-    fetchData(); // Call the async function immediately
-  }, []); // Dependencies array can be adjusted based on your needs
+    fetchData();
+  }, []);
 
   return (
     <div>
       {dataList.current.map((id: any, index) => (
         <div key={id.id} ref={imageContainerRefs[index]} className="mt-4">
-          {/* <img
-            className="hidden rounded-sm border border-black"
-            src={`/${id.Image}`}
-            alt="image"
-            height={100}
-            width={100}
-          /> */}
           <Image
             className="hidden rounded-sm border border-black"
             src={`${process.env.NEXT_PUBLIC_BASE_URL}/${id.Image}`}
@@ -656,47 +622,8 @@ const InfoCard = ({ trackId }: { trackId: string }) => {
                     {info.current?.record_summary.remaining}
                   </div>
                 </div>
-                {/* <div className="flex items-center">
-                  <div className="w-3/4 flex items-center text-slate-500">
-                    <FaCircle className="text-blue-900" />
-                    Completed
-                  </div>
-                  <div className="w-1/4">3</div>
-                </div> */}
-                {/* <div className="flex items-center text-slate-500">
-                  <div className="w-3/4 flex items-center">
-                    <FaCircle className="text-slate-500" />
-                    Remaining
-                  </div>
-                  <div className="w-1/4">0</div>
-                </div> */}
               </div>
               <div className=" flex  items-center justify-end">
-                {/* <FaCircleDot className="text-blue-900 text-6xl" /> */}
-                {/* <svg height="100" width="100" className="hidden xl:block">
-                  <circle
-                    cx="50"
-                    cy="50"
-                    r="30"
-                    stroke="#0D47A1"
-                    strokeWidth="20"
-                    fill="white"
-                    strokeDasharray={dashArray}
-                    strokeDashoffset={dashOffset}
-                  />
-                </svg>
-                <svg height="60" width="60" className="block xl:hidden">
-                  <circle
-                    cx="30"
-                    cy="30"
-                    r="18"
-                    stroke="#0D47A1"
-                    strokeWidth="12"
-                    fill="white"
-                    strokeDasharray={dashArray}
-                    strokeDashoffset={dashOffset}
-                  />
-                </svg> */}
                 <PieChartComponent
                   completedPercentage={
                     (info.current?.record_summary.completed /
@@ -710,7 +637,6 @@ const InfoCard = ({ trackId }: { trackId: string }) => {
                     100
                   }
                 />
-                {/* <Circle progress={100} lineWidth="50" progressColor="#0D47A1" /> */}
               </div>
             </div>
           </div>

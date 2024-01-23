@@ -1,35 +1,15 @@
 "use client";
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
-import { useQRCode } from "next-qrcode";
+import { useTranslation } from "@/app/i18n/client";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import QRCode from "react-qr-code";
+import { useZxing } from "react-zxing";
+import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { createRef } from "react";
-import { QrReader } from "react-qr-reader";
-import { redirect, usePathname, useRouter } from "next/navigation";
-import { useZxing } from "react-zxing";
-import { Separator } from "./ui/separator";
-import { useTranslation } from "@/app/i18n/client";
-import { auth } from "@/auth";
-import { useSession } from "next-auth/react";
-// const users =
-// // import { useMediaDevices } from "react-media-devices";
-// // const constraints: MediaStreamConstraints = {
-// //   video: true,
-// //   audio: false,
-// // };
-function QRCodePage({ Page, trackId }: { Page: string; trackId?: string }) {
-  // const session = auth();
-  // if (!session) redirect("Login");
-  // const { data: session, status } = useSession();
-  // console.log("asdasd", session);
-  // if (status !== "authenticated") {
-  //   redirect("Login");
-  // }
 
+function QRCodePage({ Page, trackId }: { Page: string; trackId?: string }) {
   const [data, setData] = useState("No result");
-  // const [alertdata, setAlertData] = useState(false);
   const [showQRReader, setShowQRReader] = useState(false);
 
   const router = useRouter();
@@ -39,51 +19,29 @@ function QRCodePage({ Page, trackId }: { Page: string; trackId?: string }) {
 
       const params = new URLSearchParams();
       if (Page === "Device") {
-        if (data) params.append("device_id", result.getText());
-        const query = params.size ? "?" + params.toString() : "";
-        router.push(`Device_registration/form${query}`);
+        if (data.length === 17) {
+          if (data) params.append("device_id", result.getText());
+          const query = params.size ? "?" + params.toString() : "";
+          router.push(`Device_registration/form${query}`);
+        } else {
+          toast.error("Not a valid Track ID");
+        }
       } else {
-        if (data) params.append("track_id", result.getText());
-        const query = params.size ? "?" + params.toString() : "";
-        router.push(`Tracking_registration/form${query}`);
+        if (data.length === 19) {
+          if (data) params.append("track_id", result.getText());
+          const query = params.size ? "?" + params.toString() : "";
+          router.push(`Tracking_registration/form${query}`);
+        } else {
+          toast.error("Not a valid Device ID");
+        }
       }
     },
     paused: !showQRReader,
   });
-  // const handleScan = (result: any, error: any) => {
-  //   if (!!result) {
-  //     setData(result.text);
-  //     const params = new URLSearchParams();
-  //     if (data) params.append("data", result.text);
-  //     const query = params.size ? "?" + params.toString() : "";
-
-  //     router.push("/Device_registration/form" + query);
-
-  //     console.log(result.text);
-  //   }
-
-  //   if (!!error) {
-  //     console.info(error);
-  //   }
-  // };
 
   const handleQRButtonClick = () => {
     setShowQRReader(true);
   };
-
-  // const handleInputChange = () => {
-  //   // setData(e.target.value);
-  //   const params = new URLSearchParams();
-  //   if (Page === "Device") {
-  //     if (data) params.append("device_id", data);
-  //     const query = params.size ? "?" + params.toString() : "";
-  //     router.push("/Device_registration/form" + query);
-  //   } else {
-  //     if (data) params.append("track_id", data);
-  //     const query = params.size ? "?" + params.toString() : "";
-  //     router.push("/Tracking_registration/form" + query);
-  //   }
-  // };
 
   const handleStopButtonClick = () => {
     setShowQRReader(false);
@@ -127,15 +85,6 @@ function QRCodePage({ Page, trackId }: { Page: string; trackId?: string }) {
                   </Button>
                 </div>
               )}
-              {/* <div className="w-64 p-2 border-2 border-slate-600 rounded-md"> */}
-              {/* <QrReader
-                  constraints={{
-                    facingMode: "environment",
-                  }}
-                  onResult={handleScan}
-                /> */}
-
-              {/* </div> */}
 
               <video
                 className="w-64  p-2 border-2 border-slate-600 rounded-md"
@@ -158,7 +107,6 @@ function QRCodePage({ Page, trackId }: { Page: string; trackId?: string }) {
               onChange={(e) => {
                 setData(e.target.value);
               }}
-              // onChange={handleInputChange}
               placeholder={
                 Page === "Device"
                   ? t("Deviceplaceholder")
@@ -168,19 +116,25 @@ function QRCodePage({ Page, trackId }: { Page: string; trackId?: string }) {
             />
             <Button
               className="mb- px-6 py-2 bg-slate-600 text-white text-lg rounded-3xl cursor-pointer"
-              // Close QR reader
               onClick={() => {
                 const params = new URLSearchParams();
                 if (Page === "Device") {
-                  console.log(data);
-                  if (data) params.append("device_id", data);
-                  const query = params.size ? "?" + params.toString() : "";
-                  router.push("Device_registration/form" + query);
+                  if (data.length === 17) {
+                    if (data) params.append("device_id", data);
+                    const query = params.size ? "?" + params.toString() : "";
+                    router.push("Device_registration/form" + query);
+                  } else {
+                    toast.error("Not a valid Track ID");
+                  }
                 } else {
-                  if (data) params.append("track_id", data);
-                  console.log(data);
-                  const query = params.size ? "?" + params.toString() : "";
-                  router.push("Tracking_registration/form" + query);
+                  if (data.length === 19) {
+                    if (data) params.append("track_id", data);
+
+                    const query = params.size ? "?" + params.toString() : "";
+                    router.push("Tracking_registration/form" + query);
+                  } else {
+                    toast.error("Not a valid Device ID");
+                  }
                 }
               }}
             >

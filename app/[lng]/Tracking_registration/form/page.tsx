@@ -1,29 +1,24 @@
 // Import necessary libraries
 "use client";
-import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
-import Webcam from "react-webcam";
-import { Input } from "@/components/ui/input";
+import { useTranslation } from "@/app/i18n/client";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -32,16 +27,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@radix-ui/themes";
-import React from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { Label } from "@/components/ui/label";
-import { useTrackingStore } from "../../../store";
-import upload from "@/app/FileUpload";
 import axios from "axios";
-import { toast } from "sonner";
-import { useTranslation } from "@/app/i18n/client";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Webcam from "react-webcam";
+import { useTrackingStore } from "../../../store";
 
 const TrackRegistrationFormPage = () => {
   const [error, setError] = useState(false);
@@ -72,14 +62,6 @@ const TrackRegistrationFormPage = () => {
   const setComment = useTrackingStore((state) => state.setComment);
   const Image = useTrackingStore((state) => state.Image);
   const setImage = useTrackingStore((state) => state.setImage);
-
-  // React.useEffect(() => {
-  //   setProcessingType("");
-  //   setLocation("");
-  //   setToolUsed("");
-  //   setComment("");
-  //   setImage("");
-  // }, []);
 
   const fetchData = async () => {
     try {
@@ -128,26 +110,19 @@ const TrackRegistrationFormPage = () => {
         name_en: tool.name_en,
       }));
       setProcessingType(processing_type.current);
-      // console.log(toolsres.data.body);
-      // console.log(tools.current);
       setLoading(false);
       setError(false);
-      // Your logic with the session data
     } catch (error: any) {
       console.error("Error fetching session data:", error);
-      // toast.error("Processing is already full for this track");
       setLoading(false);
       setError(true);
-      // setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData(); // Call the async function immediately
-  }, []); // Dependencies array can be adjusted based on your needs
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+    fetchData();
+  }, []);
+
   const router = useRouter();
   const handleSaveChanges = async () => {
     let formData = new FormData();
@@ -193,86 +168,6 @@ const TrackRegistrationFormPage = () => {
       console.error("Error adding tracking info:", error);
     }
   };
-  // const handleSaveChanges = async () => {
-  //   const access_token = localStorage.getItem("access_token");
-  //   let file;
-  //   let fileInput;
-  //   try {
-  //     // if (imgSrc) {
-  //     //   // fileInput = document.querySelector<HTMLInputElement>("#photo");
-  //     //   const byteString = atob(imgSrc.split(",")[1]);
-  //     //   const mimeString = imgSrc.split(",")[0].match(/:(.*?);/)![1];
-  //     //   const ab = byteString.length;
-  //     //   const ia = new Uint8Array(ab);
-  //     //   for (let i = 0; i < byteString.length; i++) {
-  //     //     ia[i] = byteString.charCodeAt(i);
-  //     //   }
-  //     //   // const blob = new Blob([ab], { type: mimeString });
-  //     //   console.log(imgSrc);
-  //     //   file = new File([ia], trackId + ".jpg", { type: mimeString });
-
-  //     //   // const data = new FormData();
-  //     //   // data.append("file", file);
-  //     //   // image = await upload(data);
-  //     //   // image = ab
-  //     //   console.log(file);
-  //     // }
-  //     if (imgSrc) {
-  //       const byteString = atob(imgSrc.split(",")[1]);
-  //       const mimeString = imgSrc.split(",")[0].match(/:(.*?);/)![1];
-
-  //       const ia = new Uint8Array(byteString.length);
-  //       for (let i = 0; i < byteString.length; i++) {
-  //         ia[i] = byteString.charCodeAt(i);
-  //       }
-
-  //       file = new File([ia], `${trackId}.jpg`, { type: mimeString });
-
-  //       // Now you can use the 'file' variable as a File object
-  //     }
-  //     const createdAt = new Date();
-
-  //     const requestData = {
-  //       processing_type: processing_type.current,
-  //       // "Created at": createdAt.toLocaleString("en-US", {
-  //       //   month: "numeric",
-  //       //   day: "numeric",
-  //       //   year: "numeric",
-  //       //   hour: "numeric",
-  //       //   minute: "numeric",
-  //       //   second: "numeric",
-  //       //   hour12: true,
-  //       // }),
-  //       device_id: deviceid.current,
-  //       location: Location,
-  //       tool: ToolUsed,
-  //       image_upload: file,
-  //     };
-  //     console.log(requestData.image_upload);
-  //     // const response = await axios.post(
-  //     //   "http://localhost:3001/trackingData/",
-  //     //   requestData
-  //     // );
-
-  //     const response = await axios.post(
-  //       "http://192.168.87.107:5001/records/createRecord",
-  //       requestData,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${access_token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
-  //     if (!response.data) {
-  //       throw Error("Failed to add tracking info");
-  //     }
-
-  //     console.log("Add successful");
-  //   } catch (error) {
-  //     console.error("Error adding tracking info:", error);
-  //   }
-  // };
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -284,29 +179,13 @@ const TrackRegistrationFormPage = () => {
 
   return (
     <form onSubmit={handleSubmit} className="mt-16 flex flex-col items-center ">
-      {/* Tracking Registration */}
       <div className="mb-8 text-slate-600 text-2xl font-bold">{t("title")}</div>
 
-      {/* Track ID */}
       <div className="mb-4 text-black text-2xl font-bold">
         {t("TrackID", { id: trackId })}
       </div>
 
-      {/* Input Fields */}
       <div className="flex flex-col items-center">
-        {/* Processing Type */}
-        {/* <Select onValueChange={(value) => setProcessingType(value)}>
-          <SelectTrigger className=" w-96 font-bold rounded-xl mb-4 border-slate-500">
-            <SelectValue className="" placeholder={t("ProcessingType")} />
-          </SelectTrigger>
-          <SelectContent className="">
-            <SelectGroup>
-              <SelectItem value={t("Erase")}>{t("Erase")}</SelectItem>
-              <SelectItem value={t("Purge")}>{t("Purge")}</SelectItem>
-              <SelectItem value={t("Clear")}>{t("Clear")}</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select> */}
         <Input
           name="Processing_Type"
           value={processing_type.current}
@@ -323,19 +202,6 @@ const TrackRegistrationFormPage = () => {
           placeholder={t("EnterLocation")}
         />
 
-        {/* Tool Used */}
-        {/* <Select onValueChange={(value) => setToolUsed(value)}>
-          <SelectTrigger className=" w-96 font-bold rounded-xl mb-4 border-slate-500">
-            <SelectValue className="" placeholder={t("ToolUsed")} />
-          </SelectTrigger>
-          <SelectContent className="">
-            <SelectGroup>
-              <SelectItem value={t("FlashPurge")}>{t("FlashPurge")}</SelectItem>
-              <SelectItem value={t("FlashErase")}>{t("FlashErase")}</SelectItem>
-              <SelectItem value={t("FlashClear")}>{t("FlashClear")}</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select> */}
         <Select onValueChange={(value) => setToolUsed(value)}>
           <SelectTrigger className=" w-96 font-bold rounded-xl mb-4 border-slate-500">
             <SelectValue className="" placeholder={t("ToolUsed")} />
@@ -351,7 +217,6 @@ const TrackRegistrationFormPage = () => {
           </SelectContent>
         </Select>
 
-        {/* Capture Image */}
         <div className="flex flex-wrap justify-center mb-4">
           <div className="flex flex-col items-center mx-4">
             <Webcam
@@ -369,7 +234,6 @@ const TrackRegistrationFormPage = () => {
             </Button>
           </div>
 
-          {/* Display Captured Image */}
           <div className="flex flex-col items-center mx-4">
             {imgSrc === null ? (
               <div className="w-32 bg-slate-500 h-24 mb-4 border-2 border-black rounded-lg" />
@@ -382,18 +246,8 @@ const TrackRegistrationFormPage = () => {
             )}
           </div>
         </div>
-
-        {/* Comment */}
-        {/* <Input
-          name="Comment"
-          value={Comment}
-          onChange={(e) => setComment(e.target.value)}
-          className=" w-96 font-bold rounded-xl mb-4 border-slate-500"
-          placeholder={t("EnterComment")}
-        /> */}
       </div>
 
-      {/* Buttons */}
       <div className="">
         <Button
           type="submit"

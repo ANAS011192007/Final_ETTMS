@@ -1,68 +1,30 @@
 "use client";
-import dynamic from "next/dynamic";
+import { useTranslation } from "@/app/i18n/client";
+import PieChartComponent from "@/components/chart";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import ProgressBar from "@ramonak/react-progress-bar";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import axios from "axios";
+import { jsPDF } from "jspdf";
+import dynamic from "next/dynamic";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { BsClockHistory } from "react-icons/bs";
-import { FaCircle, FaCircleDot } from "react-icons/fa6";
+import { FaCircle } from "react-icons/fa6";
 import { MdOutlineFileDownload } from "react-icons/md";
 import DeviceRegistrationData from "../../../../data/db.json";
-import Circle from "react-circle";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useTranslation } from "@/app/i18n/client";
-import { jsPDF } from "jspdf";
-import QRCodeDownload from "./QRCodeDownload";
 import Progressbar from "./Progressbar";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import React from "react";
-import { PieChart, Pie, Cell } from "recharts";
-// Dynamic import of QRious
 const QRious = dynamic(
   () => import("react-qrious").then((module) => module.QRious),
   { ssr: false }
 );
-import users from "@/data/db.json";
-import PieChartComponent from "@/components/chart";
 const InfoCard = () => {
   const record_summary: any = useRef(null);
   const info: any = useRef(null);
   const device_tags = useRef([]);
   const [loading, setLoading] = useState(true);
-  // const [record_summary, SetRecordSummary] = useState();
   const percentage = 100;
   const circumference = 2 * Math.PI * 30;
-  // const dashArray = circumference;
   const dashOffset = ((100 - percentage) / 100) * circumference;
-  // const total = 3;
-  // const completed = 1;
-  // const inProgress = 1;
-  // const remaining = 1;
-
-  // const completedPercentage = (completed / total) * 100;
-  // const inProgressPercentage = (inProgress / total) * 100;
-  // const remainingPercentage = (remaining / total) * 100;
-
-  // const completedPercentage = (completed / total) * 100;
-  // const inProgressPercentage = (inProgress / total) * 100;
-  // const remainingPercentage = (remaining / total) * 100;
-  // const dashArray = 2 * Math.PI * 30;
-  // const completedDashOffset = 0;
-  // const inProgressDashOffset = (completed / total) * dashArray;
-  // const remainingDashOffset = ((completed + inProgress) / total) * dashArray;
-  // console.log(completedDashOffset);
-  // console.log(inProgressDashOffset);
-  // console.log(remainingDashOffset);
-  // const session = await axios.post("http://localhost:3000/api/tid");
-  // console.log("asdasdas", session);
   const searchparams = useSearchParams();
   const deviceId = searchparams.get("device_id");
   const page = searchparams.get("page");
@@ -119,9 +81,6 @@ const InfoCard = () => {
 
   const fetchData = async () => {
     try {
-      // const session = await axios.post("http://localhost:3000/api/session");
-      // const email = session.data.user.email;
-      // const user = users.users.find((user: any) => user.body.email === email);
       const access_token = localStorage.getItem("access_token");
       const createdAt = new Date();
       const tid = await axios.post(
@@ -163,9 +122,7 @@ const InfoCard = () => {
       );
       console.log(device_tags.current);
       info.current = infos.data.body[0];
-      // device_tags.current = info.current!.map((device) => device.device_tag);
       setLoading(false);
-      // Your logic with the session data
     } catch (error) {
       console.error("Error fetching session data:", error);
       setLoading(false);
@@ -173,23 +130,12 @@ const InfoCard = () => {
   };
 
   useEffect(() => {
-    fetchData(); // Call the async function immediately
-  }, []); // Dependencies array can be adjusted based on your needs
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+    fetchData();
+  }, []);
+
   return (
     <div>
-      {/* <div className="text-xs">
-        <span className="text-slate-500">Project Board</span> &gt; Track Board
-        &gt; Device Board &gt; Record Board
-      </div> */}
-
       <Card className="w-full">
-        {/* <CardHeader>
-          <CardDescription>Track Information</CardDescription>
-          <CardTitle>TID 16977747770326.3</CardTitle>
-        </CardHeader> */}
         <CardContent>
           <div className="flex justify-between mt-2">
             <div className="flex-row">
@@ -253,34 +199,7 @@ const InfoCard = () => {
                   </div>
                 </div>
               </div>
-              {/* <div className="w-1/3">
-              <div className="text-slate-500">Device's Details</div>
-              <div className="flex">
-                <div className="w-1/3 text-slate-500">Device Type</div>
-                <div className="w-2/3 ">laptop</div>
-              </div>
-              <div className="flex">
-                <div className="w-1/3 text-slate-500">Serial</div>
-                <div className="w-2/3">H6234323</div>
-              </div>
-              <div className="flex">
-                <div className="w-1/3 text-slate-500">Model</div>
-                <div className="w-2/3">HP8888</div>
-              </div>
-              <div className="flex flex-col 2xl:flex-row">
-                <div className="w-full 2xl:w-1/3 text-slate-500">
-                  Manufacturer
-                </div>
-                <div className="w-full 2xl:w-2/3">Dell</div>
-              </div>
 
-              <div className="flex flex-col 2xl:flex-row">
-                <div className="w-full 2xl:w-1/3  text-slate-500">
-                  Specification
-                </div>
-                <div className="w-full 2xl:w-2/3">Ram 4GB, ROM 1TB</div>
-              </div>
-            </div> */}
               <div className="w-1/2 flex flex-row justify-end">
                 <div className="flex-col">
                   <div className="text-slate-500 2xl:mb-1">
@@ -313,15 +232,7 @@ const InfoCard = () => {
                       {record_summary.current?.inProgress}
                     </div>
                   </div>
-                  {/* <div className="flex flex-col 2xl:flex-row 2xl:mb-1">
-                    <div className="w-full 2xl:w-3/4 text-slate-500">
-                      <FaCircle className="text-slate-500 inline" />
-                      {t("InProgress")}
-                    </div>
-                    <div className="w-full 2xl:w-1/4">
-                      {record_summary.current?.inProgress}
-                    </div>
-                  </div> */}
+
                   <div className="flex 2xl:mb-1">
                     <div className="w-3/4 text-slate-500">
                       <FaCircle className="text-slate-200 inline mr-0.5" />
@@ -331,14 +242,6 @@ const InfoCard = () => {
                       {record_summary.current?.remaining}
                     </div>
                   </div>
-
-                  {/* <div className="flex items-center text-slate-500">
-                    <div className="w-3/4 flex items-center">
-                      <FaCircle className="text-slate-200" />
-                      Remaining
-                    </div>
-                    <div className="w-1/4">0</div>
-                  </div> */}
                 </div>
                 <div className=" flex  items-center justify-right">
                   <PieChartComponent
@@ -358,75 +261,6 @@ const InfoCard = () => {
                       100
                     }
                   />
-                  {/* <FaCircleDot className="text-blue-900 text-6xl" /> */}
-                  {/* <svg height="100" width="100"> */}
-                  {/* <svg height="100" width="100">
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#0D47A1"
-                      strokeWidth="20"
-                      fill="white"
-                      strokeDasharray={dashArray}
-                      strokeDashoffset={dashOffset}
-                    />
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#000000"
-                      strokeWidth="20"
-                      fill="white"
-                      strokeDasharray={dashArray}
-                      strokeDashoffset={dashOffset}
-                    />
-                  </svg> */}
-                  {/* Completed (Blue) */}
-                  {/* <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#0000FF"
-                      strokeWidth="20"
-                      fill="transparent"
-                      strokeDasharray={`${completedDashOffset} ${inProgressDashOffset} ${remainingDashOffset} ${circumference}`}
-                      strokeDashoffset="0"
-                    /> */}
-
-                  {/* <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#0000FF"
-                      strokeWidth="20"
-                      fill="white"
-                      strokeDasharray={dashArray}
-                      strokeDashoffset={completedDashOffset}
-                    />
-
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#808080"
-                      strokeWidth="20"
-                      fill="white"
-                      strokeDasharray={dashArray}
-                      strokeDashoffset={inProgressDashOffset}
-                    />
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#D3D3D3"
-                      strokeWidth="20"
-                      fill="white"
-                      strokeDasharray={dashArray}
-                      strokeDashoffset={remainingDashOffset}
-                    /> */}
-                  {/* </svg> */}
-                  {/* <Circle progress={100} lineWidth="50" progressColor="#0D47A1" /> */}
                 </div>
               </div>
             </div>
@@ -464,59 +298,6 @@ const InfoCard = () => {
                   </div>
                 </div>
                 <div className=" flex  items-center justify-right ">
-                  {/* <FaCircleDot className="text-blue-900 text-6xl" /> */}
-                  {/* <svg height="100" width="100">
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#0D47A1"
-                      strokeWidth="20"
-                      fill="white"
-                      strokeDasharray={dashArray}
-                      strokeDashoffset="0"
-                    /> */}
-                  {/* <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#0D47A1"
-                      strokeWidth="20"
-                      fill="white"
-                      strokeDasharray={dashArray}
-                      strokeDashoffset="50"
-                    /> */}
-                  {/* <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#008000"
-                      strokeWidth="20"
-                      fill="white"
-                      strokeDasharray={dashArray}
-                      strokeDashoffset="0"
-                    /> */}
-                  {/* <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#000000"
-                      strokeWidth="20"
-                      fill="white"
-                      strokeDasharray={dashArray}
-                      strokeDashoffset="66"
-                    /> */}
-                  {/* <circle
-                      cx="50"
-                      cy="50"
-                      r="30"
-                      stroke="#0D47A1"
-                      strokeWidth="20"
-                      fill="white"
-                      strokeDasharray={dashArray}
-                      strokeDashoffset="66"
-                    /> */}
-                  {/* </svg> */}
                   <PieChartComponent
                     completedPercentage={
                       (info.current?.record_summary.completed /
@@ -530,20 +311,12 @@ const InfoCard = () => {
                       100
                     }
                   />
-                  {/* <Circle progress={100} lineWidth="50" progressColor="#0D47A1" /> */}
                 </div>
               </div>
             </div>
           </div>
         </CardContent>
         <CardFooter>
-          {/* <Button
-            className="border-blue-300 text-slate-500 mr-2"
-            variant="outline"
-          >
-            <MdOutlineFileDownload className="mr-2" />
-            {t("CSVFile")}
-          </Button> */}
           <Button
             className="border-blue-300 text-slate-500"
             onClick={() => {
@@ -555,25 +328,7 @@ const InfoCard = () => {
             <MdOutlineFileDownload className="mr-2" />
             {t("QRCode")}
           </Button>
-          {/* <QRCodeDownload /> */}
-          {/* {device_tags.current!.map((deviceTag, index) => (
-            <div
-              key={deviceTag}
-              ref={qrCodeContainerRefs[index]}
-              className="hidden mt-4"
-            >
-              <QRious value={deviceTag || ""} />
-            </div>
-          ))} */}
-          {/* {device_tags.current!.map((deviceTag, index) => (
-            <div
-              key={deviceTag}
-              ref={qrCodeContainerRefs[index]}
-              className="hidden mt-4"
-            >
-              <QRious value={deviceTag || ""} />
-            </div>
-          ))} */}
+
           {device_tags.current!.map((deviceTag, index) => (
             <div
               key={deviceTag}

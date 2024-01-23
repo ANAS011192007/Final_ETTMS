@@ -1,18 +1,12 @@
-// Import necessary libraries
 "use client";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -21,33 +15,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { ObjectId } from "mongodb";
-import { Button } from "@radix-ui/themes";
-import React from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import router, { useRouter } from "next/navigation";
-import { Label } from "@/components/ui/label";
-import { useDeviceRegistrationStore } from "../../../store";
-import { useTranslation } from "../../../i18n/client";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import axios from "axios";
-import { getSession } from "next-auth/react";
-import { auth } from "@/auth";
-import users from "@/data/db.json";
-// Functional component for the registration page
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React from "react";
+import { useTranslation } from "../../../i18n/client";
+import { useDeviceRegistrationStore } from "../../../store";
 const DeviceRegistrationFormPage = () => {
-  // const { data: session, status } = useSession();
-  // console.log("asdas", status);
   const pathname = usePathname();
   const lng = pathname.split("/")[1];
   console.log(lng);
@@ -86,11 +69,6 @@ const DeviceRegistrationFormPage = () => {
 
   const handleSaveChanges = async () => {
     try {
-      // const session = await axios.post("http://localhost:3000/api/session");
-      // const email = session.data.user.email;
-      // const user = users.users.find((user: any) => user.body.email === email);
-      // const access_token = user?.access_token;
-      // console.log(access_token);
       const access_token = localStorage.getItem("access_token");
       const createdAt = new Date();
       const tid = await axios.post(
@@ -111,36 +89,8 @@ const DeviceRegistrationFormPage = () => {
         device_type: Type,
         manufacturer: Manufacturer,
         spacifications: Specification,
-        // CreatedAt: createdAt.toLocaleString("en-US", {
-        //   month: "numeric",
-        //   day: "numeric",
-        //   year: "numeric",
-        //   hour: "numeric",
-        //   minute: "numeric",
-        //   second: "numeric",
-        //   hour12: true,
-        // }),
-        // track: new ObjectId(parseInt(deviceId!)),
-
         track: trackid,
       };
-
-      // const response = await axios.post(
-      //   "http://localhost:3001/DeviceRegistrationData/",
-      //   requestData
-      // );
-      // const response = await axios.post(
-      //   "http://192.168.87.107:5001/devices/createDeviceWithModel",
-      //   requestData
-      // );
-      // const response = await fetch(
-      //   "http://192.168.87.107:5001/devices/createDeviceWithModel",
-      //   {
-      //     method: "POST",
-      //     body: JSON.stringify(requestData),
-      //     headers: { "Content-Type": "application/json" },
-      //   }
-      // );
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/devices/createDeviceWithModel`,
         requestData,
@@ -168,17 +118,13 @@ const DeviceRegistrationFormPage = () => {
   const router = useRouter();
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center mt-16 ">
-      {/* Device Registration */}
       <div className="mb-8 text-slate-600 text-2xl font-bold">{t("title")}</div>
 
-      {/* Tracking ID */}
       <div className="mb-4 text-black text-2xl font-bold">
         {t("DeviceID", { id: deviceId })}
       </div>
 
-      {/* Input Fields */}
       <div className="flex flex-col items-center">
-        {/* 6 Input Fields */}
         <div className="mb-4">
           <Input
             name="deviceName"
@@ -241,8 +187,6 @@ const DeviceRegistrationFormPage = () => {
           />
         </div>
       </div>
-
-      {/* Buttons */}
       <div className="">
         <Button
           type="submit"
@@ -262,7 +206,6 @@ const DeviceRegistrationFormPage = () => {
           <DialogContent className="">
             <div className="p-8 flex flex-col justify-center min-h-auto">
               <div className="flex flex-col items-center">
-                {/* Tracking ID */}
                 <div className="mb-4 text-black text-xl font-bold">
                   {t("DeviceID", { id: deviceId })}
                 </div>
@@ -271,7 +214,6 @@ const DeviceRegistrationFormPage = () => {
                 </div>
               </div>
 
-              {/* Remaining content aligned to the left */}
               <div className="flex flex-col gap-4 py-4">
                 <div className="flex items-center gap-x-2 gap-y-4">
                   <Label

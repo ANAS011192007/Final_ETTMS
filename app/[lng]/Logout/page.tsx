@@ -1,40 +1,4 @@
-// import React from "react";
-// import { auth } from "@/auth";
-// import { signOut } from "@/auth";
-// import { Button } from "@/components/ui/button";
-
-// const SettingPage = async () => {
-//   const session = await auth();
-//   console.log(session);
-//   const data = {
-//     redirectTo: "/Login",
-//   };
-
-//   return (
-//     <div className="container">
-//       {session ? (
-//         <div>
-//           <form
-//             action={async () => {
-//               "use server";
-//               await signOut(data);
-//             }}
-//           >
-//             <Button type="submit">Sign Out</Button>
-//           </form>
-//         </div>
-//       ) : (
-//         <p>You are not signed in.</p>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default SettingPage;
-
-// import React from "react";
-import { auth } from "@/auth";
-import { signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 

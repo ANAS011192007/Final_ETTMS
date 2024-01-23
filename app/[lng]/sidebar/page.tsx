@@ -1,20 +1,17 @@
 "use client";
+import { auth } from "@/auth";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { HiOutlineDeviceTablet } from "react-icons/hi2";
 import { MdShowChart } from "react-icons/md";
+import { TbDeviceDesktopSearch, TbLogout2 } from "react-icons/tb";
 import { TfiAgenda } from "react-icons/tfi";
-import { TbLogout2 } from "react-icons/tb";
-import { TbDeviceDesktopSearch } from "react-icons/tb";
-import { CgProfile } from "react-icons/cg";
-import Link from "next/link";
 import { useTranslation } from "../../i18n/client";
-import { auth, signOut } from "@/auth";
-import { Button } from "@/components/ui/button";
 
 const SidebarPage = ({ params: { lng } }: { params: { lng: string } }) => {
   let session;
-  const { t } = useTranslation(lng, "navbar");
+  const { t } = useTranslation(lng, "sidebar");
   const pathname = usePathname();
   console.log(pathname);
 
@@ -98,13 +95,6 @@ const SidebarPage = ({ params: { lng } }: { params: { lng: string } }) => {
             </p>
           </div>
         </Link>
-        {/* <Link href="/empty">
-          <div className="mb-4 flex items-center text-start">
-            <CgProfile className="text-l" />
-            <p className="text-slate-600 font-medium ml-1">{t!("Profile")}</p>
-          </div>
-        </Link> */}
-
         <Link href="Logout">
           <div className="flex items-center text-start">
             <TbLogout2 className="text-l" />

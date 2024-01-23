@@ -1,6 +1,4 @@
 "use client";
-import { useAuth } from "@/app/AuthContext";
-import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,34 +10,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-// import { useFormState, useFormStatus } from "react-dom";
+import { useTranslation } from "@/app/i18n/client";
 import { authenticate } from "@/app/lib/actions";
 import { usePathname, useRouter } from "next/navigation";
-import { signIn } from "@/auth";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useState } from "react";
-import { AuthError } from "next-auth";
 import { useFormState } from "react-dom";
-import { useTranslation } from "@/app/i18n/client";
 export default function LoginPage() {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
-  // const { pending } = useFormStatus();
-
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [errorMessage, setErrorMessage] = useState("");
-  // if (errorMessage === undefined) {
-  //   router.push("Tracking_registration");
-  // }
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     const loginData = {
       email,
       password,
-      // callbackUrl: "/",
       redirectTo: "Device_registration",
     };
     const pathname = usePathname();
@@ -114,7 +100,6 @@ export default function LoginPage() {
             <Button
               type="submit"
               className="bg-slate-600  font-semibold text-white w-full mt-4"
-              // aria-disabled={pending}
             >
               LOG IN
             </Button>

@@ -1,7 +1,6 @@
 "use client";
 import QRCodePage from "@/components/QRCode";
 import { useSearchParams } from "next/navigation";
-import React from "react";
 
 function TrackingRegistrationPage() {
   const searchparams = useSearchParams();

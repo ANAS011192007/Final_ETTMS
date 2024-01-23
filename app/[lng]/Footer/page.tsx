@@ -1,27 +1,5 @@
 "use client";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import Link from "next/link";
-import { MdRefresh } from "react-icons/md";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { RiArrowDropDownLine } from "react-icons/ri";
-import { usePathname } from "next/navigation";
-import { Trans } from "react-i18next/TransWithoutContext";
-import { languages } from "../../i18n/settings";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "../../i18n/client";
 
 const FooterPage = ({ params: { lng } }: { params: { lng: string } }) => {

@@ -1,32 +1,17 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useTranslation } from "@/app/i18n/client";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Image from "next/image";
-import trackingData from "../../../../data/db.json";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { EditButton } from "./EditTrackingInfo";
-import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { DeleteButton } from "./DeleteTrackingInfo";
-import { AddButton } from "./AddTrackingInfo";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useTranslation } from "@/app/i18n/client";
+import { useEffect, useRef, useState } from "react";
+import { DeleteButton } from "./DeleteTrackingInfo";
 
 interface TrackingData {
   id: string;
@@ -38,14 +23,6 @@ interface TrackingData {
   Image: string;
 }
 
-// async function getTrackingData() {
-//   const res = await fetch("http://localhost:3001/trackingData");
-//   if (!res.ok) {
-//     // This will activate the closest `error.js` Error Boundary
-//     throw new Error("Failed to fetch data");
-//   }
-//   return res.json();
-// }
 const TrackingCard = ({ trackId }: { trackId: string }) => {
   const record_summary = useRef(null);
   const dataList = useRef([[]]);
@@ -56,21 +33,8 @@ const TrackingCard = ({ trackId }: { trackId: string }) => {
   const { t } = useTranslation(lng, "TrackTable");
   const fetchData = async () => {
     try {
-      // const session = await axios.post("http://localhost:3000/api/session");
-      // const email = session.data.user.email;
-      // const user = users.users.find((user: any) => user.body.email === email);
       const access_token = localStorage.getItem("access_token");
-      // const tid = await axios.post(
-      //   "http://192.168.87.107:5001/tracks/showTrackIdByTag",
-      //   { tag_number: trackId },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${access_token}`,
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
-      // const trackid = tid.data.body.track_id;
+
       console.log(trackId);
       const infos = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/records/showAllRecordsOfFollowingDevice`,
@@ -104,14 +68,13 @@ const TrackingCard = ({ trackId }: { trackId: string }) => {
   };
 
   useEffect(() => {
-    fetchData(); // Call the async function immediately
-  }, []); // Dependencies array can be adjusted based on your needs
+    fetchData();
+  }, []);
 
   return (
     <div className="w-full ">
       <div className="flex justify-between items-end">
         <div className="text-slate-500 ml-4 text-base">{t("TrackInfo")}</div>
-        {/* <AddButton buttonName={t("Add")} /> */}
       </div>
       <div className="border border-black rounded-md h-1/3 overflow-auto">
         <Table className="border-black rounded-lg w-full">
@@ -146,13 +109,8 @@ const TrackingCard = ({ trackId }: { trackId: string }) => {
                     height={100}
                     width={100}
                   />
-                  {/* <ImagePage /> */}
                 </TableCell>
                 <TableCell className="flex justify-end flex-col ">
-                  {/* <EditButton trackingData={data} buttonName={t("Edit")} />
-                  <Button className="bg-slate-600 text-xs w-16 h-4 rounded-full m-1 ">
-                    {t("Report")}
-                  </Button> */}
                   <DeleteButton trackingData={data} buttonName={t("Delete")} />
                 </TableCell>
               </TableRow>

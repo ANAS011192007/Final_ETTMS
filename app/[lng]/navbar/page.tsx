@@ -1,11 +1,11 @@
 "use client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -16,33 +16,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { MdRefresh } from "react-icons/md";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { RiArrowDropDownLine } from "react-icons/ri";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Trans } from "react-i18next/TransWithoutContext";
-import { languages } from "../../i18n/settings";
+import { MdRefresh } from "react-icons/md";
+import { RiArrowDropDownLine } from "react-icons/ri";
 import { useTranslation } from "../../i18n/client";
-import Signout from "./Signout";
-import users from "@/data/db.json";
 
-// const getUserDetails = () => {
-//   const accessToken = localStorage.getItem("access_token");
-//   if (accessToken) {
-//     const user = users.users.find((u) => u.access_token === accessToken);
-//     if (user) {
-//       const { first_name, last_name } = user.body;
-//       return {
-//         firstName: first_name,
-//         lastName: last_name,
-//       };
-//     }
-//   }
-//   return null;
-// };
-
-// // Call the function to get user details
-// const userDetails = getUserDetails();
 const NavbarPage = ({ params: { lng } }: { params: { lng: string } }) => {
   const { t } = useTranslation(lng, "navbar");
   const router = useRouter();
@@ -60,17 +39,6 @@ const NavbarPage = ({ params: { lng } }: { params: { lng: string } }) => {
       router.push(updatedPathname);
     }
   };
-  // const handleLanguageChange = (selectedLanguage: string) => {
-  //   if (typeof pathname === 'string') {
-  //     const updatedPathname = `/${selectedLanguage}`;
-  //     const { search } = window.location;
-
-  //     router.push({
-  //       pathname: updatedPathname,
-  //       query: search ? new URLSearchParams(search).toString() : undefined,
-  //     }, undefined, { shallow: true });
-  //   }
-  // };
 
   return (
     <nav className="p-2 flex items-center justify-end border-b">
@@ -94,13 +62,6 @@ const NavbarPage = ({ params: { lng } }: { params: { lng: string } }) => {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>{t("Language")}</SelectLabel>
-                  {/* {languages
-                    .filter((l) => lng !== l)
-                    .map((l) => (
-                      <SelectItem key={l} value={l}>
-                        {l}
-                      </SelectItem>
-                    ))} */}
                   <SelectItem value="en">{t("English")}</SelectItem>
                   <SelectItem value="ja">{t("Japanese")}</SelectItem>
                 </SelectGroup>
@@ -138,14 +99,7 @@ const NavbarPage = ({ params: { lng } }: { params: { lng: string } }) => {
           <DropdownMenuContent>
             <DropdownMenuItem>
               <Link href="Logout">{t("Logout")}</Link>
-              {/* <Signout /> */}
             </DropdownMenuItem>
-            {/* <DropdownMenuItem>
-              <Link href="">{t("Do something")}</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href="">{t("Do something")}</Link>
-            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

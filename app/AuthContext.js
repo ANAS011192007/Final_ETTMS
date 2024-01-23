@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
       // Perform any necessary validation or decoding of the token
       // For simplicity, assuming the token contains user information
       const userData = JSON.parse(atob(token.split('.')[1]));
-
+      console.log(userData)
       setUser(userData);
     }
   }, []);
